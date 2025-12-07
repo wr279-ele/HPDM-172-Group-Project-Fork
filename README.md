@@ -141,6 +141,22 @@ Filters by accreditation year and emergency availability.
 Uses multi-table join filtering.
 
 ---
+## 💾 Additional Queries Implemented for This Project
+
+The following SQL files are included in the `/queries` folder and work with the  
+Appointments, LabResults, and Medications tables:
+
+- `query_appointments_by_patient.sql`  
+  Returns all appointments for a specific patient, ordered by date and time.
+
+- `query_labresults_by_patient.sql`  
+  Returns all lab test results for a specific patient, newest test first.
+
+- `query_doctor_appointments_at_hospital.sql`  
+  Lists all appointments for a specific doctor at a chosen hospital.
+
+- `query_all_medications.sql`  
+  Lists all medications from the Medications table in alphabetical order.
 
 
 ```md
