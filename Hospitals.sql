@@ -110,70 +110,70 @@ FOREIGN KEY (disease_id) REFERENCES Diseases(disease_id)
 );
 
 
-LOAD DATA LOCAL INFILE '/var/lib/mysql-files/Hospitals.csv'
+LOAD DATA LOCAL INFILE '/home/ubuntu/HPDM-172-Group-Project-/Tables/Hospitals.csv'
 INTO TABLE Hospitals
 FIELDS TERMINATED BY ',' 
 ENCLOSED BY '"'
 LINES TERMINATED BY '\n'
 IGNORE 1 ROWS;
 
-LOAD DATA LOCAL INFILE '/home/ubuntu/test-sql/Tables/Doctors.csv'
+LOAD DATA LOCAL INFILE '/home/ubuntu/HPDM-172-Group-Project-/Tables/Doctors.csv'
 INTO TABLE Doctors
 FIELDS TERMINATED BY ',' 
 ENCLOSED BY '"'
 LINES TERMINATED BY '\n'
 IGNORE 1 ROWS;
 
-LOAD DATA LOCAL INFILE '/home/ubuntu/test-sql/Tables/Patients.csv'
+LOAD DATA LOCAL INFILE '/home/ubuntu/HPDM-172-Group-Project-/Tables/Patients.csv'
 INTO TABLE Patients
 FIELDS TERMINATED BY ',' 
 ENCLOSED BY '"'
 LINES TERMINATED BY '\n'
 IGNORE 1 ROWS;
 
-LOAD DATA LOCAL INFILE '/home/ubuntu/test-sql/Tables/Appointments.csv'
+LOAD DATA LOCAL INFILE '/home/ubuntu/HPDM-172-Group-Project-/Tables/Appointments.csv'
 INTO TABLE Appointments
 FIELDS TERMINATED BY ',' 
 ENCLOSED BY '"'
 LINES TERMINATED BY '\n'
 IGNORE 1 ROWS;
 
-LOAD DATA LOCAL INFILE '/home/ubuntu/test-sql/Tables/Lab_Results.csv'
+LOAD DATA LOCAL INFILE '/home/ubuntu/HPDM-172-Group-Project-/Tables/Lab_Results.csv'
 INTO TABLE Lab_Results
 FIELDS TERMINATED BY ',' 
 ENCLOSED BY '"'
 LINES TERMINATED BY '\n'
 IGNORE 1 ROWS;
 
-LOAD DATA LOCAL INFILE '/home/ubuntu/test-sql/Tables/Medications.csv'
+LOAD DATA LOCAL INFILE '/home/ubuntu/HPDM-172-Group-Project-/Tables/Medications.csv'
 INTO TABLE Medications
 FIELDS TERMINATED BY ',' 
 ENCLOSED BY '"'
 LINES TERMINATED BY '\n'
 IGNORE 1 ROWS;
 
-LOAD DATA LOCAL INFILE '/home/ubuntu/test-sql/Tables/Prescriptions.csv'
+LOAD DATA LOCAL INFILE '/home/ubuntu/HPDM-172-Group-Project-/Tables/Prescriptions.csv'
 INTO TABLE Prescriptions
 FIELDS TERMINATED BY ',' 
 ENCLOSED BY '"'
 LINES TERMINATED BY '\n'
 IGNORE 1 ROWS;
 
-LOAD DATA LOCAL INFILE '/home/ubuntu/test-sql/Tables/Specialist.csv'
+LOAD DATA LOCAL INFILE '/home/ubuntu/HPDM-172-Group-Project-/Tables/Specialists.csv'
 INTO TABLE Specialists
 FIELDS TERMINATED BY ',' 
 ENCLOSED BY '"'
 LINES TERMINATED BY '\n'
 IGNORE 1 ROWS;
 
-LOAD DATA LOCAL INFILE '/home/ubuntu/test-sql/Tables/Diseases.csv'
+LOAD DATA LOCAL INFILE '/home/ubuntu/HPDM-172-Group-Project-/Tables/Diseases.csv'
 INTO TABLE Diseases
 FIELDS TERMINATED BY ',' 
 ENCLOSED BY '"'
 LINES TERMINATED BY '\n'
 IGNORE 1 ROWS;
 
-LOAD DATA LOCAL INFILE '/home/ubuntu/test-sql/Tables/Disease_Medication.csv'
+LOAD DATA LOCAL INFILE '/home/ubuntu/HPDM-172-Group-Project-/Tables/Disease_Medication.csv'
 INTO TABLE Disease_Medication
 FIELDS TERMINATED BY ',' 
 ENCLOSED BY '"'
