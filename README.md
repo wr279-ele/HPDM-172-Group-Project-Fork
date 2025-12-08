@@ -43,7 +43,8 @@ The database models a complete hospital information management system with the f
 
 ### **Medications**
 - medication_id (PK)
-- name
+- medication_name
+
 
 ### **Prescriptions**
 - prescription_id (PK)
