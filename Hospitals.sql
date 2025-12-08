@@ -159,7 +159,7 @@ ENCLOSED BY '"'
 LINES TERMINATED BY '\n'
 IGNORE 1 ROWS;
 
-LOAD DATA LOCAL INFILE '/home/ubuntu/HPDM-172-Group-Project-/Tables/Specialists.csv'
+LOAD DATA LOCAL INFILE '/home/ubuntu/HPDM-172-Group-Project-/Tables/Specialist.csv'
 INTO TABLE Specialists
 FIELDS TERMINATED BY ',' 
 ENCLOSED BY '"'
