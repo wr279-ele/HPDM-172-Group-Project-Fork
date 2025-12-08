@@ -177,7 +177,7 @@ Appointments, LabResults, and Medications tables:
   Lists all medications from the Medications table in alphabetical order.
 
 
-```md
+
 # ▶️ How to Use the Files
 
 ### **STEP 1 — Create the Database**
@@ -203,36 +203,35 @@ These definitions are included in the project documentation.
 Use LOAD DATA LOCAL INFILE to load each dataset.
 
 -- Import Appointments  
-LOAD DATA LOCAL INFILE 'C:/mysql_data/Appointments.csv'  
-INTO TABLE Appointments  
-FIELDS TERMINATED BY ','  
-LINES TERMINATED BY '\n'  
-IGNORE 1 ROWS  
-(appointment_id, patient_id, doctor_id, hospital_id, @date, @time, appointment_type)  
-SET appointment_date = STR_TO_DATE(@date, '%d/%m/%Y'),  
+LOAD DATA LOCAL INFILE 'C:/mysql_data/Appointments.csv'
+INTO TABLE Appointments
+FIELDS TERMINATED BY ','
+LINES TERMINATED BY '\n'
+IGNORE 1 ROWS
+(appointment_id, patient_id, doctor_id, hospital_id, @date, @time, appointment_type)
+SET appointment_date = STR_TO_DATE(@date, '%d/%m/%Y'),
     appointment_time = STR_TO_DATE(@time, '%H:%i');
 
 -- Import Lab Results  
-LOAD DATA LOCAL INFILE 'C:/mysql_data/Lab_Results.csv'  
-INTO TABLE LabResults  
-FIELDS TERMINATED BY ','  
-LINES TERMINATED BY '\n'  
-IGNORE 1 ROWS  
-(lab_result_id, patient_id, doctor_id, hospital_id, test_name, @value, result_unit, result_flag, @date)  
-SET result_value = CAST(@value AS DECIMAL(10,2)),  
+LOAD DATA LOCAL INFILE 'C:/mysql_data/Lab_Results.csv'
+INTO TABLE LabResults
+FIELDS TERMINATED BY ','
+LINES TERMINATED BY '\n'
+IGNORE 1 ROWS
+(lab_result_id, patient_id, doctor_id, hospital_id, test_name, @value,
+ result_unit, result_flag, @date)
+SET result_value = CAST(@value AS DECIMAL(10,2)),
     result_date = STR_TO_DATE(@date, '%d/%m/%Y');
 
 -- Import Medications  
-LOAD DATA LOCAL INFILE 'C:/mysql_data/Medications.csv'  
-INTO TABLE Medications  
-FIELDS TERMINATED BY ','  
-LINES TERMINATED BY '\n'  
-IGNORE 1 ROWS  
-(@dummy, medication_id, @raw_name)  
+LOAD DATA LOCAL INFILE 'C:/mysql_data/Medications.csv'
+INTO TABLE Medications
+FIELDS TERMINATED BY ','
+LINES TERMINATED BY '\n'
+IGNORE 1 ROWS
+(@dummy, medication_id, @raw_name)
 SET medication_name = TRIM(@raw_name);
 
-> Note: Only run these commands once on an empty database.  
-> Running them again will skip rows if primary keys already exist.
 
 ---
 
