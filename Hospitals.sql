@@ -24,7 +24,7 @@ num_beds INT,
 hospital_type VARCHAR(50), 
 hospital_accreditation_status VARCHAR(50),
 established_date DATE,
-emergency_service BOOELAN,
+emergency_service BOOL,
 accreditation_date DATE
 );
 
