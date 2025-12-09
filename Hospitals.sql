@@ -22,7 +22,10 @@ hospital_name VARCHAR(100),
 hospital_address VARCHAR(255),
 num_beds INT,
 hospital_type VARCHAR(50), 
-hospital_accreditation_status VARCHAR(50)
+hospital_accreditation_status VARCHAR(50),
+established_date DATE,
+emergency_service BOOELAN,
+accreditation_date DATE
 );
 
 CREATE TABLE Doctors( 
