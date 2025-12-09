@@ -1,4 +1,4 @@
-hospital_id,hospital_name,hospital_address,num_beds,hospital_type,hospital_accreditation_status,established_date,Emergency_Service,accreditation_date
+hospital_id,hospital_name,hospital_address,num_beds,hospital_type,hospital_accreditation_status,established_date,emergency_service,accreditation_date
 1,Bath General Hospital,"154 River Road, Bath, EX4 7AB",299,Teaching,Pending,2007-05-01,Y,
 2,Bath City Hospital,"93 Station Road, Bath, EX2 8AB",118,Specialist,Accredited,2016-04-06,Y,2018-04-06
 3,Bath Medical Centre,"83 River Road, Bath, EX4 2AB",129,Specialist,Pending,1987-10-04,N,
