@@ -102,3 +102,33 @@ Order by medication_name;
           FROM Hospitals as H
           JOIN Appointments as A on H.hospital_id = A.hospital_id
           WHERE num_beds < 400;
+		  
+16  --List of all doctors at Taunton Community Hospital
+
+        SELECT D.doctor_id, D.doctor_name, H.hospital_name
+        FROM Doctors as D 
+        JOIN Hospitals as H on D.hospital_id = H.hospital_id
+        WHERE hospital_name = 'Taunton Community Hospital';
+
+17. --List of all prescriptions for patient_id(30), ordered by prescription_date
+
+      SELECT P.prescription_id, M.medication_name, P.date_prescribed
+      FROM Prescriptions as P
+      JOIN Medications as M on P.medication_id = M.medication_id
+      WHERE patient_id = 30
+      ORDER BY  date_prescribed ;
+
+18. --List of all prescriptions made by doctor_id(47)
+
+      SELECT P.doctor_id, P.prescription_id, M.medication_name, P.date_prescribed
+      FROM Prescriptions as P
+      JOIN Medications as M on P.medication_id = M.medication_id
+      WHERE doctor_id = 47;
+
+19. --List of prescriptions ordered by patient_id(200)
+
+       SELECT P.patient_id, P.prescription_id, M.medication_name
+       FROM Prescriptions as P
+       JOIN Medications as M on P.medication_id = M.medication_id
+       WHERE patient_id = 200
+       ORDER BY medication_name;
