@@ -245,4 +245,4 @@ mysql -u root -p hospital_db < queries/query_appointments_by_patient.sql
 
 Use mysqldump to generate the final project export file:
 
-mysqldump -u root -p hospital_db > database/hospital_db_export.sql
+mysqldump -u root -p hospital_db > database/Hospital.sql
