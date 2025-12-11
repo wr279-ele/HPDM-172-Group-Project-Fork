@@ -204,7 +204,7 @@ Use `LOAD DATA LOCAL INFILE` to load each dataset.
 
 ```sql
 -- Import Appointments
-LOAD DATA LOCAL INFILE 'C:/mysql_data/Appointments.csv'
+LOAD DATA LOCAL INFILE '/home/ubuntu/project/data/Appointments.csv'
 INTO TABLE Appointments
 FIELDS TERMINATED BY ','
 LINES TERMINATED BY '\n'
@@ -212,11 +212,12 @@ IGNORE 1 ROWS
 (appointment_id, patient_id, doctor_id, hospital_id, @date, @time, appointment_type)
 SET appointment_date = STR_TO_DATE(@date, '%d/%m/%Y'),
     appointment_time = STR_TO_DATE(@time, '%H:%i');
+
 ```
 
 ```sql
--- Import Lab Results
-LOAD DATA LOCAL INFILE 'C:/mysql_data/Lab_Results.csv'
+--- Import Lab Results
+LOAD DATA LOCAL INFILE '/home/ubuntu/project/data/Lab_Results.csv'
 INTO TABLE LabResults
 FIELDS TERMINATED BY ','
 LINES TERMINATED BY '\n'
@@ -225,17 +226,19 @@ IGNORE 1 ROWS
  result_unit, result_flag, @date)
 SET result_value = CAST(@value AS DECIMAL(10,2)),
     result_date = STR_TO_DATE(@date, '%d/%m/%Y');
+
 ```
 
 ```sql
 -- Import Medications
-LOAD DATA LOCAL INFILE 'C:/mysql_data/Medications.csv'
+LOAD DATA LOCAL INFILE '/home/ubuntu/project/data/Medications.csv'
 INTO TABLE Medications
 FIELDS TERMINATED BY ','
 LINES TERMINATED BY '\n'
 IGNORE 1 ROWS
 (@dummy, medication_id, @raw_name)
 SET medication_name = TRIM(@raw_name);
+
 ```
 
 
