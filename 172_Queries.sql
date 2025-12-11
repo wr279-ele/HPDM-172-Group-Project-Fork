@@ -1,134 +1,149 @@
-1--Adding a new patient and registering them to a doctor 
-
-INSERT into Patients (patient_id, patient_name, patient_dob, patient_address, doctor_id) VALUES  
-                     ( 601, 'Anna,Marie', '1998/12/08', '29 fore street, Exeter, EX1 38', 23) ;
-
-2---Modifying address details for an existing customer
-
-       UPDATE Patients   
-       SET patient_address = '29 Bonhay  Road, Exeter, EX53 26'  WHERE patient_id=1;
-
-3 ---List of the patients and their address  registered to Oxford District Hospital 
-
-      SELECT  pt.patient_name, pt.patient_address, pt.doctor_id, H.hospital_name
-      From Patients as pt 
-      JOIN Doctors as D on pt.doctor_id = D.doctor_id
-      JOIN  Hospitals as H on D.hospital_id = H.hospital_id
-      WHERE hospital_name= 'Oxford District Hospital';
-
-4 ---List of doctors at teaching hospitals, with accreditation between 2015 and 2024
-
-     SELECT D.doctor_name, H.hospital_name, H.hospital_accreditation_status, H.accreditation_date
-     FROM Doctors as D
-     JOIN Hospitals as H on D.hospital_id=H.hospital_id
-     WHERE hospital_type='Teaching' and accreditation_date BETWEEN '2015-01-01' and '2024-12-31' ;
-
-—  5--Listing patients with a particular disease based on their prescribed medication
-       SELECT P.patient_id, D.disease_name, MD.medication_name
-       FROM Prescriptions as P
-       JOIN Medications as MD on P.medication_id=MD.medication_id
-       JOIN Disease_Medication as M on MD.medication_id = M.medication_id
-       JOIN Diseases as D on M.disease_id=D.disease_id
-       WHERE medication_name IN ('Amlodipine', 'Losartan');
+-- 1. Adding a new patient and registering them to a doctor
+INSERT INTO Patients (patient_id, patient_name, patient_dob, patient_address, doctor_id) VALUES
+(601, 'Anna,Marie', '1998/12/08', '29 fore street, Exeter, EX1 38', 23);
 
 
-6--List of doctors and the disease they specialise in
-      SELECT S.doctor_id, Do.doctor_name, D.disease_name
-      FROM   Specialists as S
-      JOIN Diseases as D on S.disease_id = D.disease_id
-      JOIN Doctors as Do on S.doctor_id = Do.doctor_id ;
+-- 2. Modifying address details for an existing customer
+UPDATE Patients
+SET patient_address = '29 Bonhay Road, Exeter, EX53 26'
+WHERE patient_id = 1;
 
-7--List of lab results for patients over 60 years old
 
-     SELECT L.patient_id, TIMESTAMPDIFF(YEAR, patient_dob, CURDATE()) as Age, L.test_name, L.result_value, L.result_flag
-     FROM   Lab_Results as L 
-     JOIN   Patients as P on L.patient_id = P.patient_id
-     WHERE  TIMESTAMPDIFF(YEAR, patient_dob, CURDATE()) >= 60;
+-- 3. List of the patients and their address registered to Oxford District Hospital
+SELECT P.patient_id, P.patient_name, P.patient_address, H.hospital_name
+FROM Patients AS P
+JOIN Doctors AS D ON P.doctor_id = D.doctor_id
+JOIN Hospitals AS H ON D.hospital_id = H.hospital_id
+WHERE hospital_name = 'Oxford District Hospital'
+ORDER BY patient_name;
 
-— 8. --List of appointments for patient_id(172)
-     SELECT *
-     FROM Appointments
-     WHERE patient_id= 172;
 
-— 9. --List of appointments for doctor_id(50)
-     SELECT *
-     FROM Appointments
-     WHERE doctor_id= 50;
+-- 4. Retrieve the list of patients who visited the hospital on a specific date (2023-01-07)
+SELECT P.patient_id, P.patient_name, A.appointment_date
+FROM Patients AS P
+JOIN Appointments AS A ON P.patient_id = A.patient_id
+WHERE appointment_date = '2023-01-07'
+ORDER BY patient_name;
 
-— 10.  --List of medications from Exeter District Hospital, arranged in alphabetical order 
-         With EDH as (
-                      Select  patient_id, patient_name, hospital_name,  doctor_name
-                      from    Patients as P
-                      join Doctors as D on P.doctor_id = D.doctor_id
-                      join Hospitals as H on D.hospital_id = H.hospital_id
- )
-Select E.doctor_name, E.patient_name, M.medication_name, E.hospital_name
-from EDH as E
-join Prescriptions as Pr on E.patient_id = Pr.patient_id
-join Medications as M on Pr.medication_id = M.medication_id
-where hospital_name = 'Exeter District Hospital'
-Order by medication_name;
 
-— 11.   --List of lab results from all hospitals that were accredited between 2013 and 2020
+-- 5. Listing patients with a particular disease based on their prescribed medication
+SELECT DISTINCT P.patient_id, P.patient_name, D.disease_name
+FROM Patients AS P
+JOIN Prescriptions AS S ON P.patient_id = S.patient_id
+JOIN Disease_Medication AS DM ON S.medication_id = DM.medication_id
+JOIN Diseases AS D ON DM.disease_id = D.disease_id
+ORDER BY disease_name;
 
-        SELECT  H.hospital_name, LR.test_name, LR.result_value, LR.result_flag, H.accreditation_date
-        FROM Lab_Results as LR
-        JOIN Hospitals as H on LR.hospital_id=H.hospital_id
-        WHERE  accreditation_date BETWEEN '2013-01-01' AND '2020-12-31' ;
 
-— 12.  --The doctor with the most Prescriptions
-           SELECT Pr.doctor_id, D.doctor_name, count(prescription_id) as Total_Prescription_count
-           FROM Prescriptions as Pr
-           JOIN Doctors as D on Pr.doctor_id = D.doctor_id
-           GROUP BY doctor_id
-           ORDER BY count(prescription_id)DESC
-           LIMIT 1;
+-- 6. Retrieve the number of appointments made by each patient
+SELECT P.patient_id, P.patient_name, COUNT(A.appointment_id) AS total_appointments
+FROM Patients AS P
+JOIN Appointments AS A ON P.patient_id = A.patient_id
+GROUP BY P.patient_id, P.patient_name
+ORDER BY total_appointments DESC;
 
-—13. --List of Doctors at the hospital with the most number of beds
-        SELECT   D.doctor_id, D.doctor_name, H1.hospital_name, H1.num_beds
-        FROM     ( SELECT  hospital_id FROM Hospitals
-                 ORDER BY num_beds DESC
-                 LIMIT 1) as H
-        JOIN     Doctors as D on H.hospital_id = D.hospital_id
-        JOIN    Hospitals as H1 on H.hospital_id = H1.hospital_id;
 
-— 14  --List of hospitals accredited prior to 2015 with emergency  service facilities
-         SELECT hospital_name, accreditation_date
-         FROM   Hospitals
-         WHERE  accreditation_date BETWEEN '0001-01-01' AND '2015-01-01' AND emergency_service=1 ;
+-- 7. List all doctors who work in hospitals with more than 300 beds
+SELECT D.doctor_id, D.doctor_name, H.hospital_name, H.num_beds
+FROM Doctors AS D
+JOIN Hospitals AS H ON D.hospital_id = H.hospital_id
+WHERE H.num_beds > 300
+ORDER BY doctor_name;
 
-— 15.  -- List of patients registered with doctors in hospitals with <400beds
-          SELECT DISTINCT A.patient_id, A.doctor_id, H.hospital_name, H.num_beds
-          FROM Hospitals as H
-          JOIN Appointments as A on H.hospital_id = A.hospital_id
-          WHERE num_beds < 400;
-		  
-16  --List of all doctors at Taunton Community Hospital
 
-        SELECT D.doctor_id, D.doctor_name, H.hospital_name
-        FROM Doctors as D 
-        JOIN Hospitals as H on D.hospital_id = H.hospital_id
-        WHERE hospital_name = 'Taunton Community Hospital';
+-- 8. List of appointments for patient_id = 172
+SELECT A.appointment_id, A.appointment_date, A.appointment_time, D.doctor_name
+FROM Appointments AS A
+JOIN Doctors AS D ON A.doctor_id = D.doctor_id
+WHERE patient_id = 172
+ORDER BY appointment_date, appointment_time;
 
-17. --List of all prescriptions for patient_id(30), ordered by prescription_date
 
-      SELECT P.prescription_id, M.medication_name, P.date_prescribed
-      FROM Prescriptions as P
-      JOIN Medications as M on P.medication_id = M.medication_id
-      WHERE patient_id = 30
-      ORDER BY  date_prescribed ;
+-- 9. Listing doctors with a particular specialist qualification
+SELECT DISTINCT D.doctor_id, D.doctor_name, DI.disease_name
+FROM Doctors AS D
+JOIN Specialists AS S ON D.doctor_id = S.doctor_id
+JOIN Diseases AS DI ON S.disease_id = DI.disease_id
+ORDER BY doctor_name;
 
-18. --List of all prescriptions made by doctor_id(47)
 
-      SELECT P.doctor_id, P.prescription_id, M.medication_name, P.date_prescribed
-      FROM Prescriptions as P
-      JOIN Medications as M on P.medication_id = M.medication_id
-      WHERE doctor_id = 47;
+-- 10. Retrieve all lab results of a patient (patient_id = 300)
+SELECT L.lab_result_id, L.test_name, L.result_value, L.result_unit, L.result_flag, L.result_date
+FROM Lab_Results AS L
+WHERE patient_id = 300
+ORDER BY result_date DESC;
 
-19. --List of prescriptions ordered by patient_id(200)
 
-       SELECT P.patient_id, P.prescription_id, M.medication_name
-       FROM Prescriptions as P
-       JOIN Medications as M on P.medication_id = M.medication_id
-       WHERE patient_id = 200
-       ORDER BY medication_name;
+-- 11. Retrieve all prescriptions made by doctor_id = 47
+SELECT P.prescription_id, P.patient_id, M.medication_name, P.date_prescribed
+FROM Prescriptions AS P
+JOIN Medications AS M ON P.medication_id = M.medication_id
+WHERE doctor_id = 47
+ORDER BY date_prescribed DESC;
+
+
+-- 12. Retrieve the number of patients assigned to each doctor
+SELECT D.doctor_id, D.doctor_name, COUNT(P.patient_id) AS total_patients
+FROM Doctors AS D
+LEFT JOIN Patients AS P ON D.doctor_id = P.doctor_id
+GROUP BY D.doctor_id, D.doctor_name
+ORDER BY total_patients DESC;
+
+
+-- 13. Retrieve appointments occurring at Taunton Community Hospital
+SELECT A.appointment_id, A.appointment_date, A.appointment_time, P.patient_name
+FROM Appointments AS A
+JOIN Patients AS P ON A.patient_id = P.patient_id
+JOIN Hospitals AS H ON A.hospital_id = H.hospital_id
+WHERE H.hospital_name = 'Taunton Community Hospital'
+ORDER BY appointment_date;
+
+
+-- 14. Retrieve the list of diseases treated at Exeter Central Hospital
+SELECT DISTINCT DI.disease_name
+FROM Diseases AS DI
+JOIN Disease_Medication AS DM ON DI.disease_id = DM.disease_id
+JOIN Medications AS M ON DM.medication_id = M.medication_id
+JOIN Prescriptions AS P ON M.medication_id = P.medication_id
+JOIN Hospitals AS H ON P.hospital_id = H.hospital_id
+WHERE H.hospital_name = 'Exeter Central Hospital'
+ORDER BY disease_name;
+
+
+-- 15. Retrieve all patients whose address contains 'London'
+SELECT patient_id, patient_name, patient_address
+FROM Patients
+WHERE patient_address LIKE '%London%'
+ORDER BY patient_name;
+
+
+-- 16. List of all doctors at Taunton Community Hospital
+SELECT D.doctor_id, D.doctor_name
+FROM Doctors AS D
+JOIN Hospitals AS H ON D.hospital_id = H.hospital_id
+WHERE H.hospital_name = 'Taunton Community Hospital'
+ORDER BY doctor_name;
+
+
+-- 17. List of all prescriptions for patient_id = 30, ordered by prescription_date
+SELECT P.prescription_id, M.medication_name, P.date_prescribed
+FROM Prescriptions AS P
+JOIN Medications AS M ON P.medication_id = M.medication_id
+WHERE patient_id = 30
+ORDER BY date_prescribed DESC;
+
+
+-- 18. List of all prescriptions made by doctor_id = 47
+SELECT P.prescription_id, P.patient_id, M.medication_name, P.date_prescribed
+FROM Prescriptions AS P
+JOIN Medications AS M ON P.medication_id = M.medication_id
+WHERE doctor_id = 47
+ORDER BY date_prescribed DESC;
+
+
+-- 19. List of prescriptions ordered by patient_id = 200
+SELECT P.patient_id, P.prescription_id, M.medication_name
+FROM Prescriptions AS P
+JOIN Medications AS M ON P.medication_id = M.medication_id
+WHERE patient_id = 200
+ORDER BY medication_name;
